@@ -1,0 +1,28 @@
+{
+  "name": "stackdiff",
+  "version": "0.1.0",
+  "description": "CLI tool to compare environment variable sets across .env files and deployment configs",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "stackdiff": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": ["env", "dotenv", "diff", "cli", "devops"],
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "@vitest/coverage-v8": "^1.2.0"
+  }
+}
