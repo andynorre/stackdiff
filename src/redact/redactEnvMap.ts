@@ -64,3 +64,17 @@ export function redactMultipleEnvMaps(
   }
   return results;
 }
+
+/**
+ * Returns a summary of how many keys were redacted across all env maps.
+ * Useful for logging or auditing redaction activity.
+ */
+export function summarizeRedaction(
+  results: Record<string, RedactResult>
+): Record<string, number> {
+  const summary: Record<string, number> = {};
+  for (const [name, result] of Object.entries(results)) {
+    summary[name] = result.redactedKeys.length;
+  }
+  return summary;
+}
