@@ -27,6 +27,18 @@ describe('resolveValue', () => {
     expect(resolved).toBe('plain-value');
     expect(unresolved).toHaveLength(0);
   });
+
+  it('handles empty string value', () => {
+    const { resolved, unresolved } = resolveValue('', {});
+    expect(resolved).toBe('');
+    expect(unresolved).toHaveLength(0);
+  });
+
+  it('resolves multiple occurrences of the same variable', () => {
+    const { resolved, unresolved } = resolveValue('${HOST}:${HOST}', { HOST: 'localhost' });
+    expect(resolved).toBe('localhost:localhost');
+    expect(unresolved).toHaveLength(0);
+  });
 });
 
 describe('interpolateEnvMap', () => {
@@ -60,6 +72,12 @@ describe('interpolateEnvMap', () => {
     };
     const { unresolved } = interpolateEnvMap(envMap);
     expect(unresolved.filter((k) => k === 'GHOST')).toHaveLength(1);
+  });
+
+  it('returns empty interpolated map for empty input', () => {
+    const { interpolated, unresolved } = interpolateEnvMap({});
+    expect(Object.keys(interpolated)).toHaveLength(0);
+    expect(unresolved).toHaveLength(0);
   });
 });
 
