@@ -23,6 +23,12 @@ describe('collectReplaceStats', () => {
     expect(stats.valueChanges).toBe(1);
     expect(stats.keyChanges).toBe(0);
   });
+
+  it('totalChanges equals keyChanges + valueChanges', () => {
+    const bothResult = replaceEnvMap({ OLD_HOST: 'localhost' }, { pattern: 'OLD|localhost', replacement: 'NEW' });
+    const stats = collectReplaceStats(bothResult);
+    expect(stats.totalChanges).toBe(stats.keyChanges + stats.valueChanges);
+  });
 });
 
 describe('formatReplaceResult', () => {
@@ -52,11 +58,23 @@ describe('formatMultipleReplaceResults', () => {
     expect(output).toContain('[dev]');
     expect(output).toContain('[prod]');
   });
+
+  it('includes all map names as section headers', () => {
+    const output = formatMultipleReplaceResults({ alpha: noChangeResult, beta: noChangeResult, gamma: keyChangeResult });
+    expect(output).toContain('[alpha]');
+    expect(output).toContain('[beta]');
+    expect(output).toContain('[gamma]');
+  });
 });
 
 describe('countReplacedTotal', () => {
   it('sums changes across all results', () => {
     const total = countReplacedTotal({ a: noChangeResult, b: valueChangeResult, c: keyChangeResult });
     expect(total).toBe(2);
+  });
+
+  it('returns zero when all results have no changes', () => {
+    const total = countReplacedTotal({ a: noChangeResult, b: noChangeResult });
+    expect(total).toBe(0);
   });
 });
